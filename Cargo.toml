@@ -1,0 +1,25 @@
+[package]
+name = "gentoo"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+build = "build.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+log = "0.4.14"
+simple_logger = "1.16.0"
+thiserror = "1.0.30"
+anyhow = "1.0.53"
+winit = "0.26.1"
+ash = "0.35.1"
+ash-window = "0.9.0"
+glam = "0.20.2"
+tobj = "3.2.0"
+memoffset = "0.6.5"
+
+raw-window-handle = "0.3.4"
+egui = "0.16.0"
+egui-winit = "0.16.0"
+bytemuck = "1.7.3"
