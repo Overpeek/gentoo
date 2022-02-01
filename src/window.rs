@@ -11,17 +11,17 @@ pub struct WindowSettings {
     pub resizable: bool,
 }
 
-// #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-// pub enum WindowMode {
-//     Windowed,
-//     Borderless,
-//     Exclusive,
-// }
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum WindowMode {
+    Windowed,
+    Borderless,
+    // Exclusive,
+}
 
 pub struct Window {
     pub raw_window: winit::window::Window,
 
-    // mode: WindowMode,
+    pub mode: WindowMode,
 }
 
 impl Window {
@@ -34,27 +34,25 @@ impl Window {
 
         Self {
             raw_window,
-            // mode: WindowMode::Windowed,
+            mode: WindowMode::Windowed,
         }
     }
 
-    // pub fn set_mode(&mut self, mode: WindowMode) {
-    //     match mode {
-    //         WindowMode::Windowed => self.raw_window.set_fullscreen(None),
-    //         WindowMode::Borderless => self.raw_window.set_fullscreen(Some(winit::window::Fullscreen::Borderless(None))),
-    //         WindowMode::Exclusive => {
-    //             let vm = self
-    //                 .raw_window
-    //                 .current_monitor()
-    //                 .expect("No monitor detected")
-    //                 .video_modes()
-    //                 .min()
-    //                 .expect("No video modes found");
+    pub fn update_mode(&mut self) {
+        match self.mode {
+            WindowMode::Windowed => self.raw_window.set_fullscreen(None),
+            WindowMode::Borderless => self.raw_window.set_fullscreen(Some(winit::window::Fullscreen::Borderless(None))),
+            // WindowMode::Exclusive => {
+            //     let vm = self
+            //         .raw_window
+            //         .current_monitor()
+            //         .expect("No monitor detected")
+            //         .video_modes()
+            //         .min()
+            //         .expect("No video modes found");
 
-    //             self.raw_window.set_fullscreen(Some(winit::window::Fullscreen::Exclusive(vm)));
-    //         },
-    //     }
-
-    //     self.mode = mode;
-    // }
+            //     self.raw_window.set_fullscreen(Some(winit::window::Fullscreen::Exclusive(vm)));
+            // }
+        }
+    }
 }

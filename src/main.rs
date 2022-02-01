@@ -43,11 +43,9 @@ fn main() {
                         *control_flow = ControlFlow::Exit
                     }
                     WindowEvent::Resized(PhysicalSize { width, height }) => {
-                        if !(app.window.raw_window.inner_size().width == width && app.window.raw_window.inner_size().height == height) {
-                            log::debug!("Resizing window");
-                            log::info!("New window size: {}x{}", width, height);
-                            app.resize().unwrap();
-                        }
+                        log::debug!("Resizing window");
+                        log::info!("New window size: {}x{}", width, height);
+                        app.resize().unwrap();
                     }
                     _ => ()
                 }

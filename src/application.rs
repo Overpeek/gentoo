@@ -2,7 +2,7 @@ use std::{collections::HashMap, rc::Rc, f32::consts::PI};
 
 use winit::event_loop::EventLoop;
 
-use crate::{window::{Dimensions, Window, WindowSettings}, vulkan::{Renderer, Device, Model, GentooRenderError, GameObject, TransformComponent, MAX_FRAMES_IN_FLIGHT, descriptor_set::{DescriptorSetLayout, DescriptorPool, DescriptorSetWriter}, systems::{PointLightSystem, SimpleRenderSystem}, pipeline::PipelineCache, egui::EGuiIntegration, Buffer}, keyboard_movement_controller::KeyboardMovementController, camera::CameraBuilder, FrameInfo, input::Input, GlobalUbo, PointLight, MAX_LIGHTS};
+use crate::{window::{Dimensions, Window, WindowSettings, WindowMode}, vulkan::{Renderer, Device, Model, GentooRenderError, GameObject, TransformComponent, MAX_FRAMES_IN_FLIGHT, descriptor_set::{DescriptorSetLayout, DescriptorPool, DescriptorSetWriter}, systems::{PointLightSystem, SimpleRenderSystem}, pipeline::PipelineCache, egui::EGuiIntegration, Buffer}, keyboard_movement_controller::KeyboardMovementController, camera::CameraBuilder, FrameInfo, input::Input, GlobalUbo, PointLight, MAX_LIGHTS};
 
 pub struct Application {
     pub window: Window,
@@ -214,8 +214,24 @@ impl Application {
                 });
 
                 egui::SidePanel::left("my_side_panel").show(&self.egui_integration.egui_ctx, |ui| {
-                    ui.heading("Hello");
-                    ui.label("Hello egui!");
+                    ui.heading("Gentoo");
+                    ui.separator();
+                    egui::ComboBox::from_label("Window Mode")
+                        .selected_text(format!("{:?}", self.window.mode))
+                        .show_ui(ui, |ui| {
+                            if ui.selectable_value(&mut self.window.mode, WindowMode::Windowed, "Windowed").clicked() {
+                                self.window.update_mode();
+                            }
+
+                            if ui.selectable_value(&mut self.window.mode, WindowMode::Borderless, "Borderless").clicked() {
+                                self.window.update_mode();
+                            }
+
+                            // if ui.selectable_value(&mut self.window.mode, WindowMode::Exclusive, "Exclusive").clicked() {
+                            //     self.window.update_mode();
+                            // }
+                        });
+                    ui.end_row();
                     ui.separator();
                     ui.label(format!("FPS: {}", fps));
                 });
