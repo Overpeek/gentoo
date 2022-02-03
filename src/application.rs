@@ -2,7 +2,7 @@ use std::{collections::HashMap, rc::Rc, f32::consts::PI};
 
 use winit::event_loop::EventLoop;
 
-use crate::{window::{Dimensions, Window, WindowSettings, WindowMode}, vulkan::{Renderer, Device, Model, GentooRenderError, GameObject, TransformComponent, MAX_FRAMES_IN_FLIGHT, descriptor_set::{DescriptorSetLayout, DescriptorPool, DescriptorSetWriter}, systems::{PointLightSystem, SimpleRenderSystem}, pipeline::PipelineCache, egui::EGuiIntegration, Buffer}, keyboard_movement_controller::KeyboardMovementController, camera::CameraBuilder, FrameInfo, input::Input, GlobalUbo, PointLight, MAX_LIGHTS};
+use crate::{window::{Dimensions, Window, WindowSettings, WindowMode}, vulkan::{Renderer, Device, Model, GentooRenderError, MAX_FRAMES_IN_FLIGHT, descriptor_set::{DescriptorSetLayout, DescriptorPool, DescriptorSetWriter}, systems::{PointLightSystem, SimpleRenderSystem}, pipeline::PipelineCache, egui::EGuiIntegration, Buffer}, keyboard_movement_controller::KeyboardMovementController, camera::CameraBuilder, FrameInfo, input::Input, GlobalUbo, PointLight, MAX_LIGHTS, GameObject, TransformComponent};
 
 pub struct Application {
     pub window: Window,
@@ -18,7 +18,6 @@ pub struct Application {
     global_set_layout: Rc<DescriptorSetLayout>,
     global_descriptor_sets: Vec<ash::vk::DescriptorSet>,
     ubo_buffers: Vec<Buffer<GlobalUbo>>,
-    a: glam::Vec3,
 }
 
 impl Application {
@@ -124,7 +123,6 @@ impl Application {
             global_set_layout,
             global_descriptor_sets,
             ubo_buffers,
-            a: glam::vec3(0.0, 0.0, 0.0),
         };
 
         Ok((application, event_loop))

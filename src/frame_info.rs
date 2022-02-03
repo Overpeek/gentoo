@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{vulkan::GameObject, camera::Camera};
+use crate::{camera::Camera, GameObject};
 
 pub const MAX_LIGHTS: usize = 10;
 

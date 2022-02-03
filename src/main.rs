@@ -12,8 +12,10 @@ mod frame_info;
 mod camera;
 mod keyboard_movement_controller;
 mod input;
+mod game_object;
 
 pub use frame_info::*;
+pub use game_object::*;
 
 fn main() {
     simple_logger::SimpleLogger::new().without_timestamps().init().unwrap();

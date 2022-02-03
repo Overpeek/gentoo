@@ -2,8 +2,8 @@ use std::f32::consts::PI;
 use std::f32::EPSILON;
 use winit::event::VirtualKeyCode;
 
+use crate::GameObject;
 use crate::input::Input;
-use crate::vulkan::GameObject;
 
 pub struct KeyboardMovementController {
     move_speed: f32,
