@@ -36,7 +36,7 @@ impl Renderer {
             self.is_frame_started,
             "Cannot get frame index when frame is not in progress"
         );
-        
+
         self.current_frame_index
     }
 
@@ -239,7 +239,7 @@ impl Renderer {
         };
 
         let new_swapchain =
-            Swapchain::new(self.device.clone(), extent, Some(self.swapchain.swapchain_khr))?;
+            Swapchain::new(self.device.clone(), extent, self.swapchain.swapchain_khr.take())?;
 
         self.swapchain.compare_swap_formats(&new_swapchain)?;
 

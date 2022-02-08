@@ -7,7 +7,7 @@ pub const MAX_FRAMES_IN_FLIGHT: usize = 2;
 pub struct Swapchain {
     device: Rc<Device>,
     swapchain: ash::extensions::khr::Swapchain,
-    pub swapchain_khr: ash::vk::SwapchainKHR,
+    pub swapchain_khr: Option<ash::vk::SwapchainKHR>,
     pub swapchain_image_format: ash::vk::Format,
     swapchain_depth_format: ash::vk::Format,
     pub swapchain_extent: ash::vk::Extent2D,
@@ -80,7 +80,7 @@ impl Swapchain {
         Ok(Self {
             device,
             swapchain,
-            swapchain_khr,
+            swapchain_khr: Some(swapchain_khr),
             swapchain_image_format,
             swapchain_depth_format,
             swapchain_extent,
@@ -142,7 +142,7 @@ impl Swapchain {
         logical_device.wait_for_fences(&[self.in_flight_fences[self.current_frame]], false, u64::MAX)?;
 
         Ok(self.swapchain.acquire_next_image(
-            self.swapchain_khr,
+            self.swapchain_khr.unwrap(),
             u64::MAX,
             self.image_available_semaphores[self.current_frame],
             ash::vk::Fence::null(),
@@ -184,7 +184,7 @@ impl Swapchain {
             logical_device.queue_submit(*graphics_queue, submit_info, self.in_flight_fences[self.current_frame])?;
         };
 
-        let swapchains = [self.swapchain_khr];
+        let swapchains = [self.swapchain_khr.unwrap()];
 
         let image_index = image_index as u32;
 
@@ -564,7 +564,9 @@ impl Drop for Swapchain {
                 .iter()
                 .for_each(|iv| self.device.logical_device.destroy_image_view(*iv, None));
 
-            self.swapchain.destroy_swapchain(self.swapchain_khr, None);
+            if let Some(swapchain_khr) = self.swapchain_khr {
+                self.swapchain.destroy_swapchain(swapchain_khr, None);
+            }
 
             self.depth_image_views
                 .iter()
